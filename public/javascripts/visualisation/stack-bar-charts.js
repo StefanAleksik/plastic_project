@@ -8,7 +8,9 @@ $(document).ready(function () {
         url: 'http://localhost:3000/data',
         success: function (data) {
             stackBarChartProducedAmount(data);
-            TAKcards(data);
+            TAKcards(data, function (obj) {
+                oeeBars(obj)
+            });
         },
         error: function (xhr,status,message) {
             alert("Can not reach the Registration Web Server");
@@ -19,22 +21,21 @@ $(document).ready(function () {
     })
 });
 function stackBarChartProducedAmount(data) {
-
     var arrey =[];
     var arrayOrders = [];
     data.forEach(function (p1, p2, p3) {
-        var obj = {
-            order: 'no: ' + p2 + ' ' + p1['Ordernummer'],
-            approved: p1['Godk?nd m?ngd'],
-            rejected: p1['Kasserad m?ngd'],
-            revised: p1['Omarbetad m?ngd']
-        };
-        arrey.push(obj);
-        arrayOrders.push('no: ' + p2 + ' ' + p1['Ordernummer']);
-
+        if(true) {
+            var obj = {
+                order: 'no: ' + p2 + ' ' + p1['Ordernummer'],
+                approved: p1['Godk?nd m?ngd'],
+                rejected: p1['Kasserad m?ngd'],
+                revised: p1['Omarbetad m?ngd']
+            };
+            arrey.push(obj);
+            arrayOrders.push('no: ' + p2 + ' ' + p1['Ordernummer']);
+        }
     });
     var keys = ['approved', 'rejected', 'revised'];
-
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom,
@@ -67,13 +68,16 @@ function stackBarChartProducedAmount(data) {
         .attr("class", "layer")
         .style("fill", function(d, i) { return color(i);});
 
-    layer.selectAll("rect")
-        .data(function(d) { return d; })
-        .enter().append("rect")
-        .attr("x", function(d) { return xScale(d.data.order); })
-        .attr("y", function(d) { return yScale(d[1]); })
-        .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
-        .attr("width", xScale.bandwidth());
+    var rect = layer.selectAll("rect")
+        .data(function(d) { return d; });
+
+        rect
+            .enter().append("rect")
+            //.transition().duration(750)
+            .attr("x", function(d) { return xScale(d.data.order); })
+            .attr("y", function(d) { return yScale(d[1]); })
+            .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
+            .attr("width", xScale.bandwidth());
 
     svg.append("g")
         .attr("class", "axis axis--x")
@@ -85,27 +89,110 @@ function stackBarChartProducedAmount(data) {
         .attr("dy", ".15em")
         .attr("transform", "rotate(-65)");
 
+    svg.append("g")
+        .attr("class", "axis axis--y")
+        .attr("transform", "translate(0,0)")
+        .call(yAxis);
+function update(data) {
+$('.cluster').on('click', function () {
+    var clusterValue = this.getAttribute('value');
+    var array = [];
+    data.forEach(function (p1, p2, p3) {
+        if(p1['Cluster labels'] == clusterValue){
+            var obj = {
+                order: 'no: ' + p2 + ' ' + p1['Ordernummer'],
+                approved: p1['Godk?nd m?ngd'],
+                rejected: p1['Kasserad m?ngd'],
+                revised: p1['Omarbetad m?ngd']
+            };
+            array.push(obj);
+            //arrayOrders.push('no: ' + p2 + ' ' + p1['Ordernummer']);
+        }
+    });
+
+    layers= stack(array);
+    //arrey.sort(function(a, b) { return b.total - a.total; });
+    xScale.domain(array.map(function(d) { return d.order; }));
+    yScale.domain([0, d3.max(layers[layers.length - 1], function(d) { return d[0] + d[1]; }) ]).nice();
+
+    layer = d3.selectAll('.layer').data(layers);
+    rect = layer.selectAll('rect').data(function (d) { return d });
+
+    //rect.exit().remove();
+    //layer.exit().remove();
+
+    layer.enter().append("g")
+        .attr("class", "layer")
+        .style("fill", function(d, i) { return color(i);});
+
+    rect.enter().append("rect")
+        .attr("x", function(d) { return xScale(d.data.order); })
+        .attr("y", function(d) { return yScale(d[1]); })
+        .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
+        .attr("width", xScale.bandwidth());
+    console.log(layer);
+    console.log(rect);
+
+    layer.exit().remove();
+    rect.exit().remove();
+    svg.selectAll('.axis').remove();
+
+    svg.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", "translate(0," + (height+5) + ")")
+        .call(xAxis)
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)");
 
     svg.append("g")
         .attr("class", "axis axis--y")
         .attr("transform", "translate(0,0)")
         .call(yAxis);
 
+})
 }
-
-function TAKcards(data) {
-    var domelement;
-    var oee;
-    var availability;
-    var performance;
-    var quality;
-
+update(data);
+}
+function TAKcards(data, callback) {
     data.forEach(function (p1, p2, p3) {
-        oee = p1['TAK'];
-        availability = p1['Tillg?nglighet'];
-        performance = p1['Anl?ggningsutbyte'];
-        quality = p1['Kvalitetsutbyte'];
-        domelement='<div class="col-md-3 py-3"><div class="card"><div class="card-header bg-inverse text-white"><div class="mx-auto text-center"><h3>'+ oee +'%</h3><h4>TAK/OEE</h4></div></div><div class="card-block"><div class="row  text-center"><div class="col bg-danger text-white"><strong>'+ availability +'%</strong><br><strong>(A)</strong></div><div class="col bg-warning text-white"><strong>'+ performance +'%</strong><br><strong>(P)</strong></div><div class="col bg-faded"><strong>'+ quality +'%</strong><br><strong>(Q)</strong></div></div></div><div class="card-footer"><div class="row"></div></div></div></div>';
+        var availability = parseFloat(p1['Tillg?nglighet'].replace(',','.'));
+        var performance = parseFloat(p1['Anl?ggningsutbyte'].replace(',','.'));
+        var quality = parseFloat(p1['Kvalitetsutbyte'].replace(',','.'));
+        var obj = {
+            oee: p1['TAK'],
+            availability: availability,
+            performance: performance,
+            quality: quality,
+            domBarID: 'domBarID' + p2,
+            bar: [availability, availability*performance/100, (availability*performance/100)*quality/100]
+        };
+        var domelement = '<div class="col-md-3 py-3"><div class="card"><div class="card-header bg-inverse text-white"><div class="mx-auto text-center"><h3>'+ obj.oee +'%</h3><h4>TAK/OEE</h4></div></div><div id='+ obj.domBarID +' class="card-block p-0 m-0"></div><div class="card-footer"><div class="row"></div></div></div></div>';
         $('#TAKCard').append(domelement);
+        callback(obj);
     })
+}
+function oeeBars(obj) {
+    var width = $('#'+obj.domBarID).width();
+    var height = 100;
+    var color = ['red', 'yellow', 'grey'];
+    var x = d3.scaleBand()
+        .range([0, width]);
+    var svg = d3.select('#'+obj.domBarID).append("svg")
+        .attr("width", '100%')
+        .attr("height", height)
+        .style('background', 'black')
+        .append("g");
+    svg.selectAll('rect')
+        .data(obj.bar)
+        .enter()
+        .append('rect')
+        .attr('width', '33.3%')
+        .attr('height', function (d) {return d})
+        .attr('x', function (d,i) { return width/3*i })
+        .attr('y', function (d) { return height-d })
+        .style('fill', function (d,i) { return color[i] })
+
 }
