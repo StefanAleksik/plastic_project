@@ -8,9 +8,7 @@ $(document).ready(function () {
         url: 'http://localhost:3000/data',
         success: function (data) {
             stackBarChartProducedAmount(data);
-            TAKcards(data, function (obj) {
-                oeeBars(obj)
-            });
+
         },
         error: function (xhr,status,message) {
             alert("Can not reach the Registration Web Server");
@@ -151,48 +149,7 @@ $('.cluster').on('click', function () {
         .attr("class", "axis axis--y")
         .attr("transform", "translate(0,0)")
         .call(yAxis);
-
 })
 }
 update(data);
-}
-function TAKcards(data, callback) {
-    data.forEach(function (p1, p2, p3) {
-        var availability = parseFloat(p1['Tillg?nglighet'].replace(',','.'));
-        var performance = parseFloat(p1['Anl?ggningsutbyte'].replace(',','.'));
-        var quality = parseFloat(p1['Kvalitetsutbyte'].replace(',','.'));
-        var obj = {
-            oee: p1['TAK'],
-            availability: availability,
-            performance: performance,
-            quality: quality,
-            domBarID: 'domBarID' + p2,
-            bar: [availability, availability*performance/100, (availability*performance/100)*quality/100]
-        };
-        var domelement = '<div class="col-md-3 py-3"><div class="card"><div class="card-header bg-inverse text-white"><div class="mx-auto text-center"><h3>'+ obj.oee +'%</h3><h4>TAK/OEE</h4></div></div><div id='+ obj.domBarID +' class="card-block p-0 m-0"></div><div class="card-footer"><div class="row"></div></div></div></div>';
-        $('#TAKCard').append(domelement);
-        callback(obj);
-    })
-}
-function oeeBars(obj) {
-    var width = $('#'+obj.domBarID).width();
-    var height = 100;
-    var color = ['red', 'yellow', 'grey'];
-    var x = d3.scaleBand()
-        .range([0, width]);
-    var svg = d3.select('#'+obj.domBarID).append("svg")
-        .attr("width", '100%')
-        .attr("height", height)
-        .style('background', 'black')
-        .append("g");
-    svg.selectAll('rect')
-        .data(obj.bar)
-        .enter()
-        .append('rect')
-        .attr('width', '33.3%')
-        .attr('height', function (d) {return d})
-        .attr('x', function (d,i) { return width/3*i })
-        .attr('y', function (d) { return height-d })
-        .style('fill', function (d,i) { return color[i] })
-
 }
