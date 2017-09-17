@@ -2,6 +2,7 @@ body {
   padding: 0px;
   margin: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #F5F7DC !important;
 }
 
 a {
@@ -17,4 +18,10 @@ a {
     border: 1px solid #6F257F;
     padding: 14px;
     text-align: center;
+}
+
+.backColor {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    background-color: #FCFFF5;
 }

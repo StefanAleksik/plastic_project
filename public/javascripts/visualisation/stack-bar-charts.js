@@ -92,7 +92,8 @@ function stackBarChartProducedAmount(data) {
         .attr("transform", "translate(0,0)")
         .call(yAxis);
 function update(data) {
-$('.cluster').on('click', function () {
+$('.cluster').on('click', function (e) {
+    e.preventDefault();
     var clusterValue = this.getAttribute('value');
     var array = [];
     data.forEach(function (p1, p2, p3) {
@@ -128,8 +129,7 @@ $('.cluster').on('click', function () {
         .attr("y", function(d) { return yScale(d[1]); })
         .attr("height", function(d) { return yScale(d[0]) - yScale(d[1]); })
         .attr("width", xScale.bandwidth());
-    console.log(layer);
-    console.log(rect);
+
 
     layer.exit().remove();
     rect.exit().remove();
