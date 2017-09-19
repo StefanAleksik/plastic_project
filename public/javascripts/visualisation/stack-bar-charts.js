@@ -8,7 +8,6 @@ $(document).ready(function () {
         url: 'http://localhost:3000/data',
         success: function (data) {
             stackBarChartProducedAmount(data);
-
         },
         error: function (xhr,status,message) {
             alert("Can not reach the Registration Web Server");
@@ -35,8 +34,9 @@ function stackBarChartProducedAmount(data) {
     });
     var keys = ['approved', 'rejected', 'revised'];
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
+        elementWidth = $('#stacked-bar-chart').width(),
+        width = elementWidth - margin.left - margin.right,
+        height = 250 - margin.top - margin.bottom,
         xScale = d3.scaleBand().range([0, width]).padding(0.1),
         yScale = d3.scaleLinear().range([height, 0]),
         color = d3.scaleOrdinal(d3.schemeCategory10),
@@ -56,7 +56,8 @@ function stackBarChartProducedAmount(data) {
     var layers= stack(arrey);
     //arrey.sort(function(a, b) { return b.total - a.total; });
     xScale.domain(arrey.map(function(d) { return d.order; }));
-    yScale.domain([0, d3.max(layers[layers.length - 1], function(d) { return d[0] + d[1]; }) ]).nice();
+    //console.log(layers);
+    yScale.domain([0, d3.max(data, function(d) { return d['Producerad m?ngd'] })]);
 
     //console.log(layers);
 
@@ -112,7 +113,7 @@ $('.cluster').on('click', function (e) {
     layers= stack(array);
     //arrey.sort(function(a, b) { return b.total - a.total; });
     xScale.domain(array.map(function(d) { return d.order; }));
-    yScale.domain([0, d3.max(layers[layers.length - 1], function(d) { return d[0] + d[1]; }) ]).nice();
+    yScale.domain([0, d3.max(layers[layers.length - 1], function(d) { return  d[1]; }) ]).nice();
 
     layer = d3.selectAll('.layer').data(layers);
     rect = layer.selectAll('rect').data(function (d) { return d });

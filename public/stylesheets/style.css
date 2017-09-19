@@ -25,3 +25,9 @@ a {
     transition: 0.3s;
     background-color: #FCFFF5;
 }
+#stacked-bar-chart {
+    width: 100%;
+}
+#timeline-chart {
+    width: 100%;
+}

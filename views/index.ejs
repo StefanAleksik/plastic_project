@@ -6,14 +6,17 @@
     <script src="/javascripts/jquery/jquery-3.2.1.min.js"></script>
     <script src="/javascripts/d3js/d3.min.js"></script>
     <script src="/bootstrap-4.0.0/js/bootstrap.min.js"></script>
+
       <link rel="stylesheet" href="/bootstrap-4.0.0/css/bootstrap.min.css">
   </head>
   <body>
 
     <div class="container mt-3">
-        <div class="container backColor p-0">
-
-          <form class="col-12 form-inline bg-info">
+        <div class="container backColor px-0 py-3">
+            <div id="myPlot"></div>
+        </div>
+        <div id='oee-cards' class="container backColor my-2 px-0">
+            <form class="col-12 form-inline bg-info">
             <input id="minOEE" placeholder="0" type="number" max="100" min="0" class="form-control mr-1 col-2" required>
             <input id="maxOEE"placeholder="100" type="number" max="100" min="0" class="form-control mx-1 col-2" required>
             <select id="clusterCard" class="custom-select form-control mr-1 col-2">
@@ -25,10 +28,9 @@
             </select>
             <button id="compareOEE" type="submit" class="btn btn-primary mx-1 col my-1">Compare OEE</button>
           </form>
-
-        <div class="row" id="OEECard"></div>
-      </div>
-        <div class="container backColor my-2 p-0">
+            <div class="row" id="OEECard"></div>
+        </div>
+        <div class="container backColor p-0 mb-2">
             <div class="btn-group pull-right m-2">
                 <button type="button" class="btn btn-primary dropdown-toggle float-right" data-toggle="dropdown">Clusters<span class="caret"></span>
                 </button>
@@ -44,6 +46,7 @@
     </div>
     <script type="text/javascript" src="javascripts/visualisation/stack-bar-charts.js"></script>
     <script type="text/javascript" src="javascripts/visualisation/oee-cards.js"></script>
+    <script src="javascripts/d3js/timelines-chart.js"></script>
     <script type="text/javascript" src="javascripts/visualisation/oee-timeline.js"></script>
   </body>
 
