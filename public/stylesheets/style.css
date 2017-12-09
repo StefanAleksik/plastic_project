@@ -31,3 +31,10 @@ a {
 #timeline-chart {
     width: 100%;
 }
+/*
+.ui-draggable{
+    z-index: 10000!important
+}
+.ui-draggable-dragging {
+    z-index: 10000!important
+}*/

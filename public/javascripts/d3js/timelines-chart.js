@@ -18376,6 +18376,9 @@ var timelines = function() {
                             :[new Date(rawData[i].data[j].data[k].timeRange[0]), new Date(rawData[i].data[j].data[k].timeRange[1])]
                         ),
                         val: rawData[i].data[j].data[k].val,
+                        tak: rawData[i].data[j].data[k].tak,
+                        start: rawData[i].data[j].data[k].start,
+                        end: rawData[i].data[j].data[k].end,
                         labelVal: rawData[i].data[j].data[k][rawData[i].data[j].data[k].hasOwnProperty('labelVal')?'labelVal':'val']
                     });
                 }
@@ -19042,6 +19045,8 @@ var timelines = function() {
                         return env.valScale(d.val);
                     })
                     .style('fill-opacity', 0)
+                //Add function here
+                    .on('click', function(d){selectOEECards(d)})
                     .on('mouseover.groupTooltip', env.groupTooltip.show)
                     .on('mouseout.groupTooltip', env.groupTooltip.hide)
                     .on('mouseover.lineTooltip', env.lineTooltip.show)
