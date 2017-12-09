@@ -38,3 +38,6 @@ a {
 .ui-draggable-dragging {
     z-index: 10000!important
 }*/
+.panel-heading {
+    cursor: move;
+}

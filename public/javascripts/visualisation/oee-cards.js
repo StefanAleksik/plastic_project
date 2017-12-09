@@ -15,7 +15,7 @@ $(document).ready(function () {
                 oeeBars(obj)
             });*/
             compareOEECards(data, function (filteredData) {
-                OEEcards(filteredData,'#OEECard', true, function (obj) {
+                OEEcards(filteredData,'#OEECard', false, function (obj) {
                     oeeBars(obj);
                     productionLoss(obj)
                 });
@@ -49,7 +49,7 @@ $('#compareOEE').on('click', function (e) {
          return oee >= min && oee <= max && clusterDataBase == cluster;
         }
     });
-    $('#OEECard').empty();
+    //$('#OEECard').empty();
     callback(filteredData);
 })
 }
@@ -60,7 +60,7 @@ function selectOEECards(d) {
         url: 'http://localhost:3000/data',
         success: function (data) {
             compareSelect(data, d, function (filter) {
-                OEEcards(filter,'#timelineCard', false, function (obj) {
+                OEEcards(filter,'#OEECard', false, function (obj) {
                     oeeBars(obj);
                     productionLoss(obj)
                 });
@@ -88,9 +88,9 @@ function compareSelect(data, d, callback) {
 }
 function makeid() {
     var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-    for (var i = 0; i < 5; i++)
+    for (var i = 0; i < 10; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
@@ -131,7 +131,7 @@ function OEEcards(data, dom, bol, callback) {
     };
         var domelement =
             '<div class="col-md-2 py-3 draggable"><div class="card">' +
-            '<div class="card-header bg-inverse text-white">' +
+            '<div class="card-header bg-inverse text-white panel-heading">' +
             '<div class="mx-auto text-center">' +
             '<h4>' + obj.oee +'% TAK/OEE</h4>' +
             '</div>' +
@@ -198,14 +198,14 @@ function oeeBars(obj) {
                 +'<br><strong class="text-danger"> '+(obj.tooltipString[i])+' loss:</strong><strong> '+ obj.tooltipValueLoss[i] +'%</strong>');
         })
         .on("mouseout", function(d){ tooltip.style("display", "none");});
-    $( ".draggable" ).draggable();
+    $( ".sort" ).sortable({ handle: '.panel-heading'});
 }
 
 function refresh() {
 
     $('#selectRefreshOEE').on('click', function (e) {
         e.preventDefault();
-       $('#timelineCard').empty();
+       $('#OEECard').empty();
 
     });
 
