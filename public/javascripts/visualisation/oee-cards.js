@@ -130,7 +130,7 @@ function OEEcards(data, dom, bol, callback) {
             measure: measuringPoint
     };
         var domelement =
-            '<div class="col-md-2 py-3 draggable"><div class="card">' +
+            '<div class="col-md-2 py-3"><div class="card">' +
             '<div class="card-header bg-inverse text-white panel-heading">' +
             '<div class="mx-auto text-center">' +
             '<h4>' + obj.oee +'% TAK/OEE</h4>' +

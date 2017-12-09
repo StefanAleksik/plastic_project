@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var widthTimeline = $('#oee-cards').width() - 10;
+    var widthTimeline = $('#myTimeline').width()- 30;
     console.log('the Wid: '+widthTimeline);
     $.ajax({
         dataType: 'json',
