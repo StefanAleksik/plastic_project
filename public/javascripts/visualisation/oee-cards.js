@@ -133,7 +133,7 @@ function OEEcards(data, dom, bol, callback) {
             '<div class="col-md-2 py-3"><div class="card">' +
             '<div class="card-header bg-inverse text-white panel-heading">' +
             '<div class="mx-auto text-center">' +
-            '<h4>' + obj.oee +'% TAK/OEE</h4>' +
+            '<h5>' + obj.oee +'% TAK/OEE</h5>' +
             '</div>' +
             '</div>' +
             '<div id='+ obj.domBarID +' class="card-block m-0 pb-1">' +
@@ -141,16 +141,34 @@ function OEEcards(data, dom, bol, callback) {
             '<div id='+ obj.domBarIDLoss +' class="card-block m-0 pt-1 pb-0">' +
             '</div>' +
             '<div class="card-block m-0 pt-0 pb-1">' +
-            '<h6>Goal: '+obj.goalGoods+'</h6>'+
-            '<h6>Approved: '+obj.producedItems[0].good+'</h6>' +
-            '<h6>Revised: '+obj.producedItems[0].revised+'</h6>'+
-            '<h6>Rejected: '+obj.producedItems[0].rejected+'</h6></div>'+
-            '<div class="card-footer text-muted">' +
-            '<h6>Order: '+obj.order+'</h6>' +
-            '<h6>Machine: '+obj.measure+'</h6>'+
-            '<h6>Start Time: '+obj.startTime+'</h6>'+
-            '<h6>End Time: '+obj.endTime+'</h6>'+
-            '<div class="row">' +
+            '<div class="legend">' +
+            '<div class="legend2">' +
+            '<p class="textProduct">' +
+            '<span class="key-dot goal">' +
+            '</span>Goal: '+obj.goalGoods+'</p>' +
+            '</div>' +
+            '<div class="legend2">' +
+            '<p class="textProduct">' +
+            '<span class="key-dot approved">' +
+            '</span>Approved: '+obj.producedItems[0].good+'</p>' +
+            '</div>' +
+            '<div class="legend2">' +
+            '<p class="textProduct">' +
+            '<span class="key-dot revised">' +
+            '</span>Revised: '+obj.producedItems[0].revised+'</p>' +
+            '</div>' +
+            '<div class="legend2">' +
+            '<p class="textProduct">' +
+            '<span class="key-dot rejected">' +
+            '</span>Rejected: '+obj.producedItems[0].rejected+'</p>' +
+            '</div>' +
+            '</div></div>'+
+            '<div class="card-footer"><ul class="textOrder">' +
+            '<li>Order: '+obj.order+' </li>' +
+            '<li>Machine: '+obj.measure+' </li>'+
+            '<li>Start Time: '+obj.startTime+' </li>'+
+            '<li>End Time: '+obj.endTime+' </li>'+
+            '</ul><div class="row">' +
             '</div>' +
             '</div>' +
             '</div>' +

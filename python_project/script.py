@@ -9,7 +9,7 @@ from sqlalchemy import create_engine
 
 
 original_file = pd.read_csv('data/orders1week.csv', sep=';')
-selected_columns = original_file[['Producerad m?ngd', 'Kasserad m?ngd', 'Godk?nd m?ngd', 'Omarbetad m?ngd', 'Varaktighet in hours', 'Schemalagd tid in hours', 'Total stopptid in hours', 'Antal stopp', 'Medelcykeltid in hours', 'Medelcykeltid inkl. stopptid in hours']]
+selected_columns = original_file[['Tillg?nglighet', 'Anl?ggningsutbyte', 'Kvalitetsutbyte', 'TAK']]
 
 
 def pasrseComas(x):
@@ -39,12 +39,12 @@ original_file.to_sql(name='sample_table2', con=engine, if_exists = 'append', ind
 
 #Check the number of clusters
 
-# ks = range(1, 6)
-# inertias = []
-# for k in ks:
-#     model = KMeans(n_clusters=k)
-#     model.fit(selected_columns)
-#     inertias.append(model.inertia_)
-# plt.plot(ks, inertias, '-o')
-# plt.show()
+#ks = range(1, 6)
+#inertias = []
+#for k in ks:
+#    model = KMeans(n_clusters=k)
+#    model.fit(selected_columns)
+#    inertias.append(model.inertia_)
+#plt.plot(ks, inertias, '-o')
+#plt.show()
 
