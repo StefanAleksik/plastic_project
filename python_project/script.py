@@ -6,6 +6,8 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 import pymysql
 from sqlalchemy import create_engine
+import random
+import string
 
 
 original_file = pd.read_csv('data/orders1week.csv', sep=';')
@@ -31,6 +33,13 @@ labels = pipeline.predict(selected_columns)
 labels = pd.Series(labels)
 original_file['Cluster labels'] = labels.values
 #original_file.to_csv('data/output.csv', sep=';', encoding='utf-8')
+
+
+#Adding a random string for domID
+domID = []
+for row in original_file['Cluster labels']:
+	domID.append(''.join([random.choice(string.ascii_letters) for n in range(11)]))
+original_file['domID'] = domID
 
 #To MySQL
 

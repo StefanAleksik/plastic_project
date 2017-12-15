@@ -36,13 +36,7 @@ a {
 #timeline-chart {
     width: 100%;
 }
-/*
-.ui-draggable{
-    z-index: 10000!important
-}
-.ui-draggable-dragging {
-    z-index: 10000!important
-}*/
+
 .panel-heading {
     cursor: move;
 }
@@ -52,27 +46,40 @@ a {
 }
 .legend2 {
     float:left;
-    margin-right: 3px;
+    margin-right: 4px;
 }
 
 .key-dot {
     display: inline-block;
-    height: 7px;
-    margin-right: .1em;
-    width: 7px;
+    height: 9px;
+    margin-right: 1px;
+    width: 9px;
+}
+.b-key-dot {
+    display: inline-block;
+    height: 11px;
+    margin-right: 1px;
+    width: 11px;
+}
+.s-key-dot {
+    display: inline-block;
+    height: 5px;
+    margin-right: 1px;
+    width: 5px;
 }
 .textProduct {
     margin: 0 !important;
     font-size: x-small;
 }
-.approved { background: green;}
-.revised { background: yellow;}
-.rejected { background: red;}
-.goal { background: black;}
+.approved { background: #2a9049;}
+.revised { background: 	#e8d31c;}
+.rejected { background: #e92325;}
+.goal { background: #333338;}
 
 .textOrder {
-    margin-right: 3px !important;
+    margin-right: 4px !important;
     text-align: center;
     font-size: x-small;
     list-style: none;
    }
+.glow { fill: blue !important;}

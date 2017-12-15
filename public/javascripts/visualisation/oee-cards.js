@@ -112,6 +112,7 @@ function OEEcards(data, dom, bol, callback) {
         var rejected = parseFloat(p1['Kasserad m?ngd']);
         var goal =  parseFloat(p1['M?lproduktion'].replace(',','.'));
         var id = bol ? 'domBarID' + p2 : makeid();
+        var timeLineID= p1['domID']
         var obj = {
             oee: oee,
             domBarID: id,
@@ -127,40 +128,45 @@ function OEEcards(data, dom, bol, callback) {
             order: order,
             startTime: startTime,
             endTime: endTime,
-            measure: measuringPoint
+            measure: measuringPoint,
+            timeLineID: timeLineID
     };
+        var aprClass = obj.producedItems[0].good >= obj.goalGoods ? 'b-key-dot':'s-key-dot';
+        var goalClass = obj.producedItems[0].good <= obj.goalGoods ? 'b-key-dot':'s-key-dot';
+        var highlight = 'onmouseover="changeColor('+obj.timeLineID+')"';
+        var unhighlight = 'onmouseout="returnColor('+obj.timeLineID+')"';
         var domelement =
-            '<div class="col-md-2 py-3"><div class="card">' +
+            '<div class="col-md-2 col-sm-2 py-3" '+highlight+' '+unhighlight+'><div class="card">' +
             '<div class="card-header bg-inverse text-white panel-heading">' +
             '<div class="mx-auto text-center">' +
-            '<h5>' + obj.oee +'% TAK/OEE</h5>' +
+            '<h6>' + obj.oee +'% TAK/OEE</h6>' +
             '</div>' +
             '</div>' +
-            '<div id='+ obj.domBarID +' class="card-block m-0 pb-1">' +
+            '<div id='+ obj.domBarID +' class="card-block m-0 pb-1 px-2">' +
             '</div>' +
-            '<div id='+ obj.domBarIDLoss +' class="card-block m-0 pt-1 pb-0">' +
+            '<div id='+ obj.domBarIDLoss +' class="card-block m-0 pt-1 pb-0 px-2">' +
             '</div>' +
-            '<div class="card-block m-0 pt-0 pb-1">' +
+            '<div class="card-block m-0 pt-0 pb-1 px-2">' +
             '<div class="legend">' +
             '<div class="legend2">' +
             '<p class="textProduct">' +
-            '<span class="key-dot goal">' +
-            '</span>Goal: '+obj.goalGoods+'</p>' +
+            '<span class="'+goalClass+' goal">' +
+            '</span>'+obj.goalGoods+'</p>' +
             '</div>' +
             '<div class="legend2">' +
             '<p class="textProduct">' +
-            '<span class="key-dot approved">' +
-            '</span>Approved: '+obj.producedItems[0].good+'</p>' +
+            '<span class="'+aprClass+' approved">' +
+            '</span>'+obj.producedItems[0].good+'</p>' +
             '</div>' +
             '<div class="legend2">' +
             '<p class="textProduct">' +
             '<span class="key-dot revised">' +
-            '</span>Revised: '+obj.producedItems[0].revised+'</p>' +
+            '</span>'+obj.producedItems[0].revised+'</p>' +
             '</div>' +
             '<div class="legend2">' +
             '<p class="textProduct">' +
             '<span class="key-dot rejected">' +
-            '</span>Rejected: '+obj.producedItems[0].rejected+'</p>' +
+            '</span>'+obj.producedItems[0].rejected+'</p>' +
             '</div>' +
             '</div></div>'+
             '<div class="card-footer"><ul class="textOrder">' +
@@ -177,25 +183,33 @@ function OEEcards(data, dom, bol, callback) {
         callback(obj);
     })
 }
+function changeColor(id) {
+    $(id).attr('class','glow')
+}
+function returnColor(id) {
+    setTimeout(function () {
+        $(id).attr('class','series-segment')
+    }, 1500)
+}
 function oeeBars(obj) {
     var tooltip = d3.select("body").append("div").attr("class", "toolTip");
     var width = $('#'+obj.domBarID).width();
     var height = 100;
-    var color = ['red', 'yellow', 'grey'];
+    var color = ['#e92325', '#e8d31c', '#abacb7'];
     var x = d3.scaleBand()
         .range([0, width]);
     x.domain(obj.bar);
     var svg = d3.select('#'+obj.domBarID).append("svg")
         .attr("width", '100%')
         .attr("height", height)
-        .style('background', 'black')
+        .style('background', '#333338')
         .append("g");
     svg.selectAll('rect')
         .data(obj.bar)
         .enter()
         .append('rect')
         .attr("class", "bar")
-        .attr('width', '33.3333%')
+        .attr('width', '33.33%')
         .attr('height', function (d) {return 0})
         .attr('x', function (d,i) { return width/obj.bar.length*i })
         .attr('y', function (d) { return height })
@@ -233,7 +247,7 @@ function productionLoss(obj) {
     var tooltip = d3.select("body").append("div").attr("class", "toolTip");
     var width = $('#'+obj.domBarIDLoss).width();
     var height = 30;
-    var color = ['green', 'yellow', 'red'];
+    var color = ['#2a9049', '#e8d31c', '#e92325'];
     var x = d3.scaleLinear()
         .range([0, width])
         .domain([0, obj.goalGoods]);
@@ -246,7 +260,7 @@ function productionLoss(obj) {
     var svg = d3.select('#'+obj.domBarIDLoss).append("svg")
         .attr("width", '100%')
         .attr("height", height)
-        .style('background', 'black')
+        .style('background', '#333338')
         .append("g");
     var layer = svg.selectAll(".layer")
         .data(layers)

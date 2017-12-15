@@ -18272,21 +18272,21 @@ var TimeOverview = function(options, callback, context){
 
 var timelines = function() {
     var env = {
-        width : 720,  // default width
+        width : 1000,  // default width
         height : null,
-        maxHeight : 640, // default maxHeight
-        overviewHeight : 20, // Height of overview section in bottom
+        maxHeight : 1200, // default maxHeight
+        overviewHeight : 30, // Height of overview section in bottom
         lineMaxHeight : 12,
-        minLabelFont : 2,
+        minLabelFont : 5,
         margin : {top: 26, right: 100, bottom: 30, left: 90 },
-        groupBkgGradient : ['#FAFAFA', '#E0E0E0'],
+        groupBkgGradient : ['#FAFAFA', '#FAFAFA'],
 
         xScale : time(),
         yScale : point$4(),
         grpScale : ordinal(),
         valScale : linear$2()
-            .domain([0, 0.5, 1])
-            .range(["red", "yellow", "green"])
+            .domain([0, 50, 100])
+            .range(["#e92325", "#e8d31c", "#2a9049"])
             .clamp(false),
 
         zDataLabel: "", // Units of z data. Used in the tooltip descriptions
@@ -18379,6 +18379,7 @@ var timelines = function() {
                         tak: rawData[i].data[j].data[k].tak,
                         start: rawData[i].data[j].data[k].start,
                         end: rawData[i].data[j].data[k].end,
+                        domID: rawData[i].data[j].data[k].domID,
                         labelVal: rawData[i].data[j].data[k][rawData[i].data[j].data[k].hasOwnProperty('labelVal')?'labelVal':'val']
                     });
                 }
@@ -19035,6 +19036,7 @@ var timelines = function() {
             var newSegments = timelines.enter()
                 .append('rect')
                     .attr("class", "series-segment")
+                    .attr('id', function(d){ return d.domID})
                     .attr('rx', 1)
                     .attr('ry', 1)
                     .attr('x', env.graphW/2)

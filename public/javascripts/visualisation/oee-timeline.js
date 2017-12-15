@@ -9,7 +9,7 @@ $(document).ready(function () {
 
             var myData = oeeData(data),
                 myPlot = TimelinesChart()
-                    .width(widthTimeline)
+                    .width(widthTimeline).animationsEnabled(false)
                     .zDataLabel("OEE/TAK: ").enableOverview(true);
             myPlot(document.getElementById("myPlot"), myData);
         },
@@ -55,50 +55,50 @@ function oeeData(data) {
     //console.log(sortDates);
 
     function oeeColor(a) {
-        var parse = parseFloat(a.replace(',','.'))/100;
+        var parse = parseFloat(a.replace(',','.'));
         var temp = parse == 0 ? NaN : parse;
         return temp;
     }
     sortDates.forEach(function (p1, p2, p3) {
         switch (p1['M?tpunkt']){
             case 'Open1':
-                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid']};
+                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid'], domID:p1['domID']};
                 Open1.push(temp);
                 break;
             case 'Open4':
-                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid']};
+                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid'], domID:p1['domID']};
                 Open4.push(temp);
                 break;
             case 'Open5':
-                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid']};
+                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid'], domID:p1['domID']};
                 Open5.push(temp);
                 break;
             case 'Open6':
-                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid']};
+                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid'], domID:p1['domID']};
                 Open6.push(temp);
                 break;
             case '02 - Wet end':
-                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid']};
+                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid'], domID:p1['domID']};
                 WetEnd.push(temp);
                 break;
             case '05 - Pre-Dryer':
-                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid']};
+                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid'], domID:p1['domID']};
                 PreDryer.push(temp);
                 break;
             case '07 - After-Dryer':
-                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid']};
+                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid'], domID:p1['domID']};
                 AfterDryer.push(temp);
                 break;
             case '08 - Pope Reel':
-                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid']};
+                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid'], domID:p1['domID']};
                 PopeReel.push(temp);
                 break;
             case '09 - Jumbo Back Stand':
-                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid']};
+                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid'], domID:p1['domID']};
                 JumboBackStand.push(temp);
                 break;
             case '10 - Re Winder':
-                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid']};
+                temp = {timeRange: [convertDateTime(p1['Starttid']), convertDateTime(p1['Sluttid'])], val: oeeColor(p1['TAK']), tak:p1['TAK'], start:p1['Starttid'], end:p1['Sluttid'], domID:p1['domID']};
                 ReWinder.push(temp);
                 break;
             default:
