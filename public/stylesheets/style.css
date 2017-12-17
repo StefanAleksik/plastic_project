@@ -83,3 +83,6 @@ a {
     list-style: none;
    }
 .glow { fill: blue !important;}
+
+.select {
+    box-shadow: 0px 0px 5px #2C37E8;  }

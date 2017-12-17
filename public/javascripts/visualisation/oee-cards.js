@@ -5,15 +5,16 @@ $(document).ready(function () {
     $(".draggable").draggable({
         handle: ".modal-header"
     });
-    refresh();
-        $.ajax({
+    slider();
+    //refresh();
+    $.ajax({
         dataType: 'json',
         method: 'GET',
         url: 'http://localhost:3000/data',
         success: function (data) {
-           /* OEEcards(data, 0, 100, function (obj) {
-                oeeBars(obj)
-            });*/
+            /* OEEcards(data, 0, 100, function (obj) {
+             oeeBars(obj)
+             });*/
             compareOEECards(data, function (filteredData) {
                 OEEcards(filteredData,'#OEECard', false, function (obj) {
                     oeeBars(obj);
@@ -30,28 +31,29 @@ $(document).ready(function () {
     })
 });
 function compareOEECards(data, callback) {
-$('#compareOEE').on('click', function (e) {
-    e.preventDefault();
-    var min = $('#minOEE').val() || 0;
-    var max = $('#maxOEE').val() || 100;
+    $('#slider-range').on('slide', function (e) {
+        /*e.preventDefault();*/
+        $('#OEECard').empty();
+        var min = $( "#slider-range" ).slider("values",0) || 0;
+        var max = $( "#slider-range" ).slider("values",1) || 100;
 
-    var clusterValue = $('#clusterCard').val();
-    var cluster = parseInt(clusterValue, 10);
+        var clusterValue = $('#clusterCard').val();
+        var cluster = parseInt(clusterValue, 10);
 
-    var filteredData = data.filter(function (p1, p2, p3) {
-        var oee = parseFloat(p1['TAK'].replace(',','.'));
+        var filteredData = data.filter(function (p1, p2, p3) {
+            var oee = parseFloat(p1['TAK'].replace(',','.'));
 
-        var clusterDataBase = parseFloat(p1['Cluster labels']);
-        if (cluster == 4){
-            return oee >= min && oee <= max;
-        }
-        else {
-         return oee >= min && oee <= max && clusterDataBase == cluster;
-        }
-    });
-    //$('#OEECard').empty();
-    callback(filteredData);
-})
+            var clusterDataBase = parseFloat(p1['Cluster labels']);
+            if (cluster == 4){
+                return oee >= min && oee <= max;
+            }
+            else {
+                return oee >= min && oee <= max && clusterDataBase == cluster;
+            }
+        });
+        //$('#OEECard').empty();
+        callback(filteredData);
+    })
 }
 function selectOEECards(d) {
     $.ajax({
@@ -117,6 +119,7 @@ function OEEcards(data, dom, bol, callback) {
             oee: oee,
             domBarID: id,
             domBarIDLoss: id+'Loss',
+            domBarFooter: id+'Footer',
             tooltipString: ['Availability', 'Performance', 'Quality'],
             tooltipValue: [availability, performance, quality],
             clusterValue: cluster,
@@ -130,13 +133,13 @@ function OEEcards(data, dom, bol, callback) {
             endTime: endTime,
             measure: measuringPoint,
             timeLineID: timeLineID
-    };
+        };
         var aprClass = obj.producedItems[0].good >= obj.goalGoods ? 'b-key-dot':'s-key-dot';
         var goalClass = obj.producedItems[0].good <= obj.goalGoods ? 'b-key-dot':'s-key-dot';
-        var highlight = 'onmouseover="changeColor('+obj.timeLineID+')"';
-        var unhighlight = 'onmouseout="returnColor('+obj.timeLineID+')"';
+        var highlight = 'onclick="changeColor('+obj.timeLineID+', '+obj.domBarFooter+')"';
+
         var domelement =
-            '<div class="col-md-2 col-sm-2 py-3" '+highlight+' '+unhighlight+'><div class="card">' +
+            '<div class="col-md-2 col-sm-4 col-6 py-3"><div class="card">' +
             '<div class="card-header bg-inverse text-white panel-heading">' +
             '<div class="mx-auto text-center">' +
             '<h6>' + obj.oee +'% TAK/OEE</h6>' +
@@ -144,7 +147,8 @@ function OEEcards(data, dom, bol, callback) {
             '</div>' +
             '<div id='+ obj.domBarID +' class="card-block m-0 pb-1 px-2">' +
             '</div>' +
-            '<div id='+ obj.domBarIDLoss +' class="card-block m-0 pt-1 pb-0 px-2">' +
+            '<span class="card-block m-0 pt-0 pb-0 px-2 text-center">Produced items</span>' +
+            '<div id='+ obj.domBarIDLoss +' class="card-block m-0 pt-0 pb-0 px-2">' +
             '</div>' +
             '<div class="card-block m-0 pt-0 pb-1 px-2">' +
             '<div class="legend">' +
@@ -169,7 +173,7 @@ function OEEcards(data, dom, bol, callback) {
             '</span>'+obj.producedItems[0].rejected+'</p>' +
             '</div>' +
             '</div></div>'+
-            '<div class="card-footer"><ul class="textOrder">' +
+            '<div id='+ obj.domBarFooter +' class="card-footer"' +highlight+' style="cursor:pointer"><ul class="textOrder">' +
             '<li>Order: '+obj.order+' </li>' +
             '<li>Machine: '+obj.measure+' </li>'+
             '<li>Start Time: '+obj.startTime+' </li>'+
@@ -183,14 +187,20 @@ function OEEcards(data, dom, bol, callback) {
         callback(obj);
     })
 }
-function changeColor(id) {
-    $(id).attr('class','glow')
-}
-function returnColor(id) {
-    setTimeout(function () {
+function changeColor(id, dom) {
+
+    $(dom).toggleClass('select');
+    var clas = $(id).attr('class');
+
+    if (clas == 'series-segment'){
+        $(id).attr('class','glow series-segment')
+    }
+    else {
         $(id).attr('class','series-segment')
-    }, 1500)
+    }
+
 }
+
 function oeeBars(obj) {
     var tooltip = d3.select("body").append("div").attr("class", "toolTip");
     var width = $('#'+obj.domBarID).width();
@@ -220,14 +230,14 @@ function oeeBars(obj) {
         .attr('y', function (d) { return height-d })
         .attr('height', function (d) { return d});
 
-        svg.selectAll('.bar')
+    svg.selectAll('.bar')
         .on("mousemove", function(d, i){
             tooltip
                 .style("left", d3.event.pageX + 10 + "px")
                 .style("top", d3.event.pageY + 10 + "px")
                 .style("display", "inline-block")
                 .html('<strong class="text-primary">'+(obj.tooltipString[i])+':</strong><strong> '+ obj.tooltipValue[i] +'%</strong>'
-                +'<br><strong class="text-danger"> '+(obj.tooltipString[i])+' loss:</strong><strong> '+ obj.tooltipValueLoss[i] +'%</strong>');
+                    +'<br><strong class="text-danger"> '+(obj.tooltipString[i])+' loss:</strong><strong> '+ obj.tooltipValueLoss[i] +'%</strong>');
         })
         .on("mouseout", function(d){ tooltip.style("display", "none");});
     $( ".sort" ).sortable({ handle: '.panel-heading'});
@@ -237,7 +247,7 @@ function refresh() {
 
     $('#selectRefreshOEE').on('click', function (e) {
         e.preventDefault();
-       $('#OEECard').empty();
+        $('#OEECard').empty();
 
     });
 
@@ -275,4 +285,19 @@ function productionLoss(obj) {
         .attr("height", height)
         .attr("width", function(d) { return x(d[1]) - x(d[0]) });
 
+}
+
+function slider() {
+    $( "#slider-range" ).slider({
+        range: true,
+        min: 0,
+        max: 100,
+        values: [ 0, 100 ],
+        slide: function( event, ui ) {
+            $( "#minOEE" ).val(ui.values[0] );
+            $( "#maxOEE" ).val(ui.values[1] );
+        }
+    });
+    $( "#minOEE" ).val( $( "#slider-range" ).slider( "values", 0 ) );
+    $( "#maxOEE" ).val( $( "#slider-range" ).slider( "values", 1 ) );
 }
