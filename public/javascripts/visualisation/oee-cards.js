@@ -261,7 +261,7 @@ function changeColor(id, dom) {
     }
 }
 function oeeBars(obj) {
-    var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+    var tooltip = d3.select("body").append("div").attr("class", "toolTTip");
     var width = $('#'+obj.domBarID).width();
     var height = 100;
     var color = ['#e92325', '#e8d31c', '#abacb7'];
@@ -292,8 +292,8 @@ function oeeBars(obj) {
     svg.selectAll('.bar')
         .on("mousemove", function(d, i){
             tooltip
-                .style("left", d3.event.pageX - 70 +"px")
-                .style("top", d3.event.pageY - 50 +"px")
+                .style("left", d3.event.pageX - 190 + "px")
+                .style("top", d3.event.pageY - 110 + "px")
                 .style("display", "inline-block")
                 .html('<strong class="text-primary">'+(obj.tooltipString[i])+':</strong><strong> '+ obj.tooltipValue[i] +'%</strong>'
                     +'<br><strong class="text-danger"> '+(obj.tooltipString[i])+' loss:</strong><strong> '+ obj.tooltipValueLoss[i] +'%</strong>');

@@ -9,12 +9,20 @@ ul {
     margin: 0px !important;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+.group-tooltip{
+    position: absolute !important;
+    top: 10px !important;
+    left: 50px !important;
+}
+.line-tooltip{
+    display: none;
+}
 
 a {
   color: #00B7FF;
 }
-
-.toolTip {
+#myPlot{overflow: hidden}
+.toolTTip {
     position: absolute;
     display: none;
     min-width: 80px;

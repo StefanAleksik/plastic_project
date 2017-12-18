@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var widthTimeline = $('#myTimeline').width()- 30;
-    console.log('the Wid: '+widthTimeline);
+    //console.log('the Wid: '+widthTimeline);
     $.ajax({
         dataType: 'json',
         method: 'GET',
@@ -115,6 +115,6 @@ function oeeData(data) {
                {group: "PopeReel", data: [{label:"PopeReel", data:PopeReel}]},
                {group: "JumboBackStand", data: [{label:"JumboBackStand", data:JumboBackStand}]},
                {group: "ReWinder", data: [{label:"ReWinder", data:ReWinder}]}];
-
+    console.log(obj);
     return obj;
 }
