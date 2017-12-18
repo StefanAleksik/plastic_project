@@ -115,6 +115,6 @@ function oeeData(data) {
                {group: "PopeReel", data: [{label:"PopeReel", data:PopeReel}]},
                {group: "JumboBackStand", data: [{label:"JumboBackStand", data:JumboBackStand}]},
                {group: "ReWinder", data: [{label:"ReWinder", data:ReWinder}]}];
-    console.log(obj);
+
     return obj;
 }

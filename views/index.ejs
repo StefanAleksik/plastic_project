@@ -29,18 +29,34 @@
         <div id="myPlot"></div>
     </div>
     <div id='oee-cards' class="mt-3 w-100 backColor my-2 px-0 container">
+
         <form class="col-12 form-inline bg-info">
-            <input id="minOEE" placeholder="0" type="text" readonly class="form-control mr-1 col-1">
-            <div class="form-control mx-1 col-4" id="slider-range"></div>
-            <input id="maxOEE"placeholder="100" type="text" readonly class="form-control mx-1 col-1">
-            <select id="clusterCard" class="custom-select form-control mr-1 col-2">
-                <option class="clusterCard" value="4">All clusters</option>
-                <option class="clusterCard" value="0">0</option>
-                <option class="clusterCard" value="1">1</option>
-                <option class="clusterCard" value="2">2</option>
-                <option class="clusterCard" value="3">3</option>
-            </select>
-            <button id="compareOEE" type="submit" class="btn btn-primary mx-1 col-2 my-1">Compare OEE</button>
+            <div class="mx-auto form-inline ">
+            <label class="checkbox-inline custom-control custom-checkbox col-auto">
+                <input class="value custom-control-input" id='cluster1' type="checkbox" onclick="initClick()" value=0>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Cluser 1</span>
+            </label>
+            <label class="checkbox-inline custom-control custom-checkbox col-auto">
+                <input class="value custom-control-input" id='cluster2' type="checkbox" onclick="initClick()" value=1>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Cluster 2</span>
+            </label>
+            <label class="checkbox-inline custom-control custom-checkbox col-auto">
+                <input class="value custom-control-input" id='cluster3' type="checkbox" onclick="initClick()" value=2>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Cluster 3</span>
+            </label>
+            <label class="checkbox-inline custom-control custom-checkbox col-auto">
+                <input class="value custom-control-input" id='cluster4' type="checkbox" onclick="initClick()" value=3>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Cluster 4</span>
+            </label>
+
+            <input id="minOEE" placeholder="0" type="text" readonly class="inputRange mr-2">
+            <div class="mx-1 col-3" id="slider-range"></div>
+            <input id="maxOEE" placeholder="100" type="text" readonly class="inputRange ml-2">
+            </div>
            <!-- <button id="selectRefreshOEE"  type="submit" class="btn btn-primary mx-1 col my-1">Clear</button>-->
         </form>
         <div class="row sort px-0" id="OEECard"></div>

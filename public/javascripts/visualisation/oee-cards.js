@@ -1,6 +1,9 @@
 /**
  * Created by Stefan Aleksik on 10.8.2017.
  */
+
+
+
 $(document).ready(function () {
     $(".draggable").draggable({
         handle: ".modal-header"
@@ -12,15 +15,13 @@ $(document).ready(function () {
         method: 'GET',
         url: 'http://localhost:3000/data',
         success: function (data) {
-            /* OEEcards(data, 0, 100, function (obj) {
-             oeeBars(obj)
-             });*/
             compareOEECards(data, function (filteredData) {
                 OEEcards(filteredData,'#OEECard', false, function (obj) {
                     oeeBars(obj);
                     productionLoss(obj)
                 });
-            })
+            });
+
         },
         error: function (xhr,status,message) {
             alert("Can not reach the Registration Web Server");
@@ -30,6 +31,60 @@ $(document).ready(function () {
         }
     })
 });
+function clickCompareOEECards(data, callback) {
+
+        $('#OEECard').empty();
+
+        var min = $( "#slider-range" ).slider("values",0) || 0;
+        var max = $( "#slider-range" ).slider("values",1) || 100;
+
+        var valCluster =[];
+        var checkboxID = ['#cluster1', '#cluster2', '#cluster3', '#cluster4'];
+        checkboxID.forEach(function (p1, p2, p3) {
+            if($(p1).is(":checked")){
+                valCluster.push(parseInt($(p1).val(), 10))
+            }
+        });
+
+        var filteredData = data.filter(function (p1, p2, p3) {
+            var oee = parseFloat(p1['TAK'].replace(',','.'));
+            var clusterDataBase = parseFloat(p1['Cluster labels']);
+            if (valCluster.length == 0){
+                return false;
+            }
+            else {
+                var cluster = valCluster.filter(function (e) {
+                    return clusterDataBase == e
+                });
+                return oee >= min && oee <= max && clusterDataBase == cluster[0];
+            }
+        });
+        callback(filteredData);
+
+}
+function initClick() {
+    console.log('hi');
+    $.ajax({
+        dataType: 'json',
+        method: 'GET',
+        url: 'http://localhost:3000/data',
+        success: function (data) {
+            clickCompareOEECards(data, function (Data) {
+                OEEcards(Data,'#OEECard', false, function (ob) {
+                    oeeBars(ob);
+                    productionLoss(ob)
+                });
+            })
+
+        },
+        error: function (xhr,status,message) {
+            alert("Can not reach the Registration Web Server");
+            alert(JSON.stringify(xhr));
+            alert(status);
+            alert(message);
+        }
+    })
+}
 function compareOEECards(data, callback) {
     $('#slider-range').on('slide', function (e) {
         /*e.preventDefault();*/
@@ -37,24 +92,32 @@ function compareOEECards(data, callback) {
         var min = $( "#slider-range" ).slider("values",0) || 0;
         var max = $( "#slider-range" ).slider("values",1) || 100;
 
-        var clusterValue = $('#clusterCard').val();
-        var cluster = parseInt(clusterValue, 10);
-
-        var filteredData = data.filter(function (p1, p2, p3) {
-            var oee = parseFloat(p1['TAK'].replace(',','.'));
-
-            var clusterDataBase = parseFloat(p1['Cluster labels']);
-            if (cluster == 4){
-                return oee >= min && oee <= max;
-            }
-            else {
-                return oee >= min && oee <= max && clusterDataBase == cluster;
+        var valCluster =[];
+        var checkboxID = ['#cluster1', '#cluster2', '#cluster3', '#cluster4'];
+        checkboxID.forEach(function (p1, p2, p3) {
+            if($(p1).is(":checked")){
+                valCluster.push(parseInt($(p1).val(), 10))
             }
         });
-        //$('#OEECard').empty();
+
+        console.log(valCluster);
+        var filteredData = data.filter(function (p1, p2, p3) {
+            var oee = parseFloat(p1['TAK'].replace(',','.'));
+            var clusterDataBase = parseFloat(p1['Cluster labels']);
+            if (valCluster.length == 0){
+                return false;
+            }
+            else {
+                var cluster = valCluster.filter(function (e) {
+                    return clusterDataBase == e
+                });
+                return oee >= min && oee <= max && clusterDataBase == cluster[0];
+            }
+        });
         callback(filteredData);
     })
 }
+
 function selectOEECards(d) {
     $.ajax({
         dataType: 'json',
@@ -154,22 +217,22 @@ function OEEcards(data, dom, bol, callback) {
             '<div class="legend">' +
             '<div class="legend2">' +
             '<p class="textProduct">' +
-            '<span class="'+goalClass+' goal">' +
+            '<span class="'+goalClass+' goal ttooltip"><span class="ttooltiptext goal">Goal</span>' +
             '</span>'+obj.goalGoods+'</p>' +
             '</div>' +
             '<div class="legend2">' +
             '<p class="textProduct">' +
-            '<span class="'+aprClass+' approved">' +
+            '<span class="'+aprClass+' approved ttooltip"><span class="ttooltiptext approved">Approved</span>' +
             '</span>'+obj.producedItems[0].good+'</p>' +
             '</div>' +
             '<div class="legend2">' +
             '<p class="textProduct">' +
-            '<span class="key-dot revised">' +
+            '<span class="key-dot revised ttooltip"><span class="ttooltiptext revised">Revised</span>' +
             '</span>'+obj.producedItems[0].revised+'</p>' +
             '</div>' +
             '<div class="legend2">' +
             '<p class="textProduct">' +
-            '<span class="key-dot rejected">' +
+            '<span class="key-dot rejected ttooltip"><span class="ttooltiptext rejected">Rejected</span>' +
             '</span>'+obj.producedItems[0].rejected+'</p>' +
             '</div>' +
             '</div></div>'+
@@ -188,19 +251,15 @@ function OEEcards(data, dom, bol, callback) {
     })
 }
 function changeColor(id, dom) {
-
     $(dom).toggleClass('select');
     var clas = $(id).attr('class');
-
     if (clas == 'series-segment'){
         $(id).attr('class','glow series-segment')
     }
     else {
         $(id).attr('class','series-segment')
     }
-
 }
-
 function oeeBars(obj) {
     var tooltip = d3.select("body").append("div").attr("class", "toolTip");
     var width = $('#'+obj.domBarID).width();
@@ -233,8 +292,8 @@ function oeeBars(obj) {
     svg.selectAll('.bar')
         .on("mousemove", function(d, i){
             tooltip
-                .style("left", d3.event.pageX + 10 + "px")
-                .style("top", d3.event.pageY + 10 + "px")
+                .style("left", d3.event.pageX - 70 +"px")
+                .style("top", d3.event.pageY - 50 +"px")
                 .style("display", "inline-block")
                 .html('<strong class="text-primary">'+(obj.tooltipString[i])+':</strong><strong> '+ obj.tooltipValue[i] +'%</strong>'
                     +'<br><strong class="text-danger"> '+(obj.tooltipString[i])+' loss:</strong><strong> '+ obj.tooltipValueLoss[i] +'%</strong>');
@@ -244,13 +303,10 @@ function oeeBars(obj) {
 }
 
 function refresh() {
-
     $('#selectRefreshOEE').on('click', function (e) {
         e.preventDefault();
         $('#OEECard').empty();
-
     });
-
 }
 
 function productionLoss(obj) {
@@ -296,6 +352,10 @@ function slider() {
         slide: function( event, ui ) {
             $( "#minOEE" ).val(ui.values[0] );
             $( "#maxOEE" ).val(ui.values[1] );
+        },
+        classes: {
+            "ui-slider": "ui-corner-all",
+            "ui-slider-handle": "ui-corner-all"
         }
     });
     $( "#minOEE" ).val( $( "#slider-range" ).slider( "values", 0 ) );

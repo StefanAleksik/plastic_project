@@ -42,7 +42,7 @@ a {
 }
 
 .legend{
-    overflow: auto;
+    overflow: visible;
 }
 .legend2 {
     float:left;
@@ -56,7 +56,7 @@ a {
     width: 9px;
 }
 .b-key-dot {
-    display: inline-block;
+    display: inline-block ;
     height: 11px;
     margin-right: 1px;
     width: 11px;
@@ -71,10 +71,10 @@ a {
     margin: 0 !important;
     font-size: x-small;
 }
-.approved { background: #2a9049;}
-.revised { background: 	#e8d31c;}
-.rejected { background: #e92325;}
-.goal { background: #333338;}
+.approved { background: #2a9049; color: #1d1e1f}
+.revised { background: 	#e8d31c; color: #1d1e1f}
+.rejected { background: #e92325; color: #1d1e1f}
+.goal { background: #333338; color: #c4e3f3}
 
 .textOrder {
     margin-right: 4px !important;
@@ -86,3 +86,39 @@ a {
 
 .select {
     box-shadow: 0px 0px 5px #2C37E8;  }
+
+.inputRange {
+    width: 5%;
+    font-size: small;
+    padding: 3px 5px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.ttooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.ttooltip .ttooltiptext {
+    visibility: hidden;
+    width: 70px;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    font-size: small;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 10;
+    bottom: 120%;
+    left: 30%;
+    margin-left: -30px;
+}
+
+.ttooltip:hover .ttooltiptext {
+    visibility: visible;
+}
