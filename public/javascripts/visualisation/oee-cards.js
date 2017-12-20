@@ -5,6 +5,7 @@
 
 
 $(document).ready(function () {
+    selectAll();
     $(".draggable").draggable({
         handle: ".modal-header"
     });
@@ -63,7 +64,7 @@ function clickCompareOEECards(data, callback) {
 
 }
 function initClick() {
-    console.log('hi');
+    //console.log('hi');
     $.ajax({
         dataType: 'json',
         method: 'GET',
@@ -260,6 +261,30 @@ function changeColor(id, dom) {
         $(id).attr('class','series-segment')
     }
 }
+
+function selectAll() {
+    var checkboxes = document.getElementsByName('checkbox');
+    $('#selectALL').on('click', function () {
+        //e.preventDefault();
+       $('#selectALL').toggleClass('btnhide');
+        $('#deselectALL').toggleClass('btnhide');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = true;
+        }
+        initClick();
+    });
+    $('#deselectALL').on('click', function () {
+        //e.preventDefault();
+        $('#selectALL').toggleClass('btnhide');
+        $('#deselectALL').toggleClass('btnhide');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = false;
+        }
+        initClick();
+    });
+}
+
+
 function oeeBars(obj) {
     var tooltip = d3.select("body").append("div").attr("class", "toolTTip");
     var width = $('#'+obj.domBarID).width();

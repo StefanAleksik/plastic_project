@@ -32,23 +32,25 @@
 
         <form class="col-12 form-inline bg-info">
             <div class="mx-auto form-inline w-80">
+                <button type="button" id="deselectALL" class="btn btn-primary m-1 p-1 w-10 btnhide">Deselect all</button>
+                <button type="button" id="selectALL" class="btn btn-primary m-1 p-1 w-10 btnclass">Select all</button>
             <label class="checkbox-inline custom-control custom-checkbox col-auto">
-                <input class="value custom-control-input" id='cluster1' type="checkbox" onclick="initClick()" value=0>
+                <input class="value custom-control-input" id='cluster1' type="checkbox" onclick="initClick()" name='checkbox' value=0>
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">Cluser 1</span>
             </label>
             <label class="checkbox-inline custom-control custom-checkbox col-auto">
-                <input class="value custom-control-input" id='cluster2' type="checkbox" onclick="initClick()" value=1>
+                <input class="value custom-control-input" id='cluster2' type="checkbox" onclick="initClick()" name='checkbox' value=1>
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">Cluster 2</span>
             </label>
             <label class="checkbox-inline custom-control custom-checkbox col-auto">
-                <input class="value custom-control-input" id='cluster3' type="checkbox" onclick="initClick()" value=2>
+                <input class="value custom-control-input" id='cluster3' type="checkbox" onclick="initClick()" name='checkbox' value=2>
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">Cluster 3</span>
             </label>
             <label class="checkbox-inline custom-control custom-checkbox col-auto">
-                <input class="value custom-control-input" id='cluster4' type="checkbox" onclick="initClick()" value=3>
+                <input class="value custom-control-input" id='cluster4' type="checkbox" onclick="initClick()" name='checkbox' value=3>
                 <span class="custom-control-indicator"></span>
                 <span class="custom-control-description">Cluster 4</span>
             </label>
